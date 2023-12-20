@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- ======= Head ======= -->
+<%-include("layouts/head.ejs")%>
+<!-- ======= End Head ======= -->
+<body>
+  <!-- ======= Header ======= -->
+  <%-include("layouts/header.ejs")%>
+  <!-- ======= End Header ======= -->
+
+
+
+  <!-- ======= Sidebar ======= -->
+  <%-include("layouts/sidebar.ejs")%>
+  <!-- ======= End Sidebar ======= -->
+
+  
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Dashboard</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
+          <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section dashboard">
+      <div class="row">
+
+        <!-- Left side columns -->
+        <div class="col-lg-12">
+          <div class="row">
+
+           <!-- User Card -->
+<div class="col-xxl-4 col-md-6">
+  <div class="card info-card sales-card">
+    <div class="card-body">
+      <h5 class="card-title">User <span>| Total</span></h5>
+      <div class="d-flex align-items-center">
+        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+          <i class="bi bi-person"></i> <!-- Change the icon here -->
+        </div>
+        <div class="ps-3">
+          <h6><%= AllUserData %></h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- End User Card -->
+
+<!-- Blog Card -->
+<div class="col-xxl-4 col-md-6">
+  <div class="card info-card sales-card">
+    <div class="card-body">
+      <h5 class="card-title">Blog <span>| Total</span></h5>
+      <div class="d-flex align-items-center">
+        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+          <i class="bi bi-pencil"></i> <!-- Change the icon here -->
+        </div>
+        <div class="ps-3">
+          <h6><%= AllBlog %></h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- End Blog Card -->
+
+<!-- Doctor Card -->
+<div class="col-xxl-4 col-md-6">
+  <div class="card info-card sales-card">
+    <div class="card-body">
+      <h5 class="card-title">Doctor <span>| Total</span></h5>
+      <div class="d-flex align-items-center">
+        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+          <i class="bi bi-person-circle"></i> <!-- Change the icon here -->
+        </div>
+        <div class="ps-3">
+          <h6><%= AllDoctor %></h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- End Doctor Card -->
+
+               <!-- Pending Appointment Card -->
+<div class="col-xxl-4 col-md-6">
+  <div class="card info-card sales-card">
+    <div class="card-body">
+      <h5 class="card-title">Pending Appointment <span>| Total</span></h5>
+      <div class="d-flex align-items-center">
+        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+          <i class="bi bi-calendar-check"></i> <!-- Change the icon here -->
+        </div>
+        <div class="ps-3">
+          <h6><%= PendingApp %></h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- End Appointment Card -->
+
+<!-- Department Card -->
+<div class="col-xxl-4 col-md-6">
+  <div class="card info-card sales-card">
+    <div class="card-body">
+      <h5 class="card-title">Department <span>| Total</span></h5>
+      <div class="d-flex align-items-center">
+        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+          <i class="bi bi-building"></i> <!-- Change the icon here -->
+        </div>
+        <div class="ps-3">
+          <h6><%= AllDepartment %></h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- End Department Card -->
+
+<!-- Contact Card -->
+<div class="col-xxl-4 col-md-6">
+  <div class="card info-card sales-card">
+    <div class="card-body">
+      <h5 class="card-title">Contact Us <span>| Total</span></h5>
+      <div class="d-flex align-items-center">
+        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+          <i class="bi bi-envelope"></i> <!-- Change the icon here -->
+        </div>
+        <div class="ps-3">
+          <h6><%= AllContact %></h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- End Contact Card -->
+
+
+
+            <!-- Fatured Doctor Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card">
+                <div class="card-body">
+                  <h5 class="card-title">Fatured Doctor <span>| Total</span></h5>
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-person-circle"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6><%= AllFeaturedDoctor %></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- End Fatured Doctor Card -->
+
+
+          </div>
+        </div><!-- End Left side columns -->
+
+       
+
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+
+
+
+<div style="margin-top: 300px;"></div>
+
+
+  <!-- ======= Footer ======= -->
+  <%-include("layouts/footer.ejs")%>
+  <!-- ======= End Footer ======= -->
+
+
+
+  <!-- ======= Scripts ======= -->
+  <%-include("layouts/scripts.ejs")%>
+  <!-- ======= End Scripts ======= -->
+
+  
+
+</body>
+
+</html>
+   

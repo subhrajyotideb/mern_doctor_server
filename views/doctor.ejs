@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- ======= Head ======= -->
+<%-include("layouts/head.ejs")%>
+<!-- ======= End Head ======= -->
+<body>
+  <!-- ======= Header ======= -->
+  <%-include("layouts/header.ejs")%>
+  <!-- ======= End Header ======= -->
+
+
+
+  <!-- ======= Sidebar ======= -->
+  <%-include("layouts/sidebar.ejs")%>
+  <!-- ======= End Sidebar ======= -->
+
+  <main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Doctors</h1>
+        
+            <a href="/admin/adddoctor" class="btn btn-success">Add Doctor</a>
+        
+    </div>
+
+    <section class="section dashboard">
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table datatable" style="margin-top: 20px; width: 100%;">
+                    <thead>
+                        <tr>
+                            
+                        </tr>
+                        <tr>
+                            <th scope="col">Department</th>
+                            <th scope="col">Doctor</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Aperture Time</th>
+                            <th scope="col">Departure Time</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Image</th>
+                            <th colspan="2">Operations</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (let datas of data) { %>
+                            <% for (let department of datas.department_details) { %>
+                                <tr>
+                                    <td><%= department.departmentName %></td>
+                                    <td><%= datas.name %></td>
+                                    <td><%= datas.date.toDateString() %></td>
+                                    <td><%= datas.aperture_time ? new Date(`1970-01-01T${datas.aperture_time}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '' %></td>
+                                    <td><%= datas.departure_time ? new Date(`1970-01-01T${datas.departure_time}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '' %></td>
+                                    <td><%= datas.description %></td>
+                                    <td><img src="/<%= datas.image %>" height="50px" alt="Doctor Image"></td>
+                                    <td>
+                                        <a href="/admin/editdoctor/<%=datas._id%>" class="btn btn-primary">Edit</a>
+                                        <a href="" class="btn btn-danger ml-2">Delete</a>
+                                    </td>
+                                </tr>
+                                
+                            <% } %>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+
+<div style="margin-top: 300px;"></div>
+
+
+  <!-- ======= Footer ======= -->
+  <%-include("layouts/footer.ejs")%>
+  <!-- ======= End Footer ======= -->
+
+
+
+  <!-- ======= Scripts ======= -->
+  <%-include("layouts/scripts.ejs")%>
+  <!-- ======= End Scripts ======= -->
+
+  
+
+</body>
+
+</html>
+   

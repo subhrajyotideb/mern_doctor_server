@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- ======= Head ======= -->
+<%-include("layouts/head.ejs")%>
+<!-- ======= End Head ======= -->
+<body>
+  <!-- ======= Header ======= -->
+  <%-include("layouts/header.ejs")%>
+  <!-- ======= End Header ======= -->
+
+
+
+  <!-- ======= Sidebar ======= -->
+  <%-include("layouts/sidebar.ejs")%>
+  <!-- ======= End Sidebar ======= -->
+
+  <main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Featured Doctors</h1>
+    </div>
+
+    <section class="section dashboard">
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table datatable" style="margin-top: 20px; width: 100%;">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">Department Name</th>
+                            <th style="width: 15%;">Doctor Name</th>
+                            <th style="width: 15%;">Description</th>
+                            <th style="width: 15%;">Timing</th>
+                            <th style="width: 15%;">Image</th>
+                            <th style="width: 25%;">Featured</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (let datas of data) { %>
+                            <% for (let department of datas.department_details) { %>
+                                <tr>
+                                    <td><%= department.departmentName %></td>
+                                    <td><%= datas.name %></td>
+                                    <td><%= datas.description %></td>
+                                    <td>time....</td>
+                                    <td><img src="/<%= datas.image %>" height="50px" alt="Doctor Image"></td>
+                                    <td>
+                                        <a href="/admin/fbutton/<%= datas._id %>" class="btn btn-success">
+                                            <%= datas.featured ? 'Remove Featured' : 'Add Featured' %>
+                                        </a>
+                                    </td>
+                                    
+                                </tr>
+                            <% } %>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+
+<div style="margin-top: 300px;"></div>
+
+
+  <!-- ======= Footer ======= -->
+  <%-include("layouts/footer.ejs")%>
+  <!-- ======= End Footer ======= -->
+
+
+
+  <!-- ======= Scripts ======= -->
+  <%-include("layouts/scripts.ejs")%>
+  <!-- ======= End Scripts ======= -->
+
+  
+
+</body>
+
+</html>
+   

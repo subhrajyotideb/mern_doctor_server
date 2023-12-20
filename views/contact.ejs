@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- ======= Head ======= -->
+<%-include("layouts/head.ejs")%>
+<!-- ======= End Head ======= -->
+<body>
+  <!-- ======= Header ======= -->
+  <%-include("layouts/header.ejs")%>
+  <!-- ======= End Header ======= -->
+
+
+
+  <!-- ======= Sidebar ======= -->
+  <%-include("layouts/sidebar.ejs")%>
+  <!-- ======= End Sidebar ======= -->
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Contact Us</h1>
+      
+    </div><!-- End Page Title -->
+
+    <section class="section dashboard">
+        <div class="row">
+          <div class="col-lg-12">
+            <table class="table datatable" style="margin-top: 20px;">
+              <thead>
+                
+                <tr>
+                  <th scope="col">User Name</th>
+                  <th scope="col">User Email</th>
+                  <th scope="col">User Phone</th>
+                  <th scope="col">Topic</th>
+                  <th scope="col">Message</th>
+                  <th scope="col">Operations</th>
+                </tr>
+              </thead>
+              <tbody>
+
+<% for (let datas of data) { %>
+
+                <tr>
+                  <td><%=datas.name%></td>
+                  <td><%=datas.email%></td>
+                  <td><%=datas.topic%></td>
+                  <td><%=datas.phone%></td>
+                  <td><%=datas.msg%></td>
+                  <td>
+                    <a href="" class="btn btn-danger" style="margin-left: 5px;">Delete</a>
+                  </td>
+                </tr>
+
+<% } %>
+
+              </tbody>
+              
+            </table>
+          </div>
+        </div>
+      </section>
+      
+
+  </main>
+
+
+<div style="margin-top: 300px;"></div>
+
+
+  <!-- ======= Footer ======= -->
+  <%-include("layouts/footer.ejs")%>
+  <!-- ======= End Footer ======= -->
+
+
+
+  <!-- ======= Scripts ======= -->
+  <%-include("layouts/scripts.ejs")%>
+  <!-- ======= End Scripts ======= -->
+
+  
+
+</body>
+
+</html>
+   

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- ======= Head ======= -->
+<%-include("layouts/head.ejs")%>
+<!-- ======= End Head ======= -->
+<body>
+  <!-- ======= Header ======= -->
+  <%-include("layouts/header.ejs")%>
+  <!-- ======= End Header ======= -->
+
+
+
+  <!-- ======= Sidebar ======= -->
+  <%-include("layouts/sidebar.ejs")%>
+  <!-- ======= End Sidebar ======= -->
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Dashboard</h1>
+    </div>
+
+    <section class="section dashboard">
+        <div class="container-fluid py-5">
+            <h6 class="text-primary text-uppercase" style="letter-spacing: 5px;">Dashboard</h6>
+            <h1>Admin Details</h1>
+        </div>
+        <div class="row">
+            <div class="col-lg col-md mb">
+                <div class="service-item bg-white mb-2 py-5 px-5 d-flex align-items-center">
+                    <div class="col-lg-2 col-md-2 mb-2">
+                      <img src="/<%=data.image%>" alt="Profile" class="rounded-circle" height="175px">
+                    </div>
+                    <div class="col-lg-5 col-md-5 mb-5 ">
+                        <h5 class="mb-3">User :- <%=data.name%>
+                        </h5>
+                        <h5 class="mb-3">Email :- <%=data.email%>
+                        </h5>
+                        <h5 class="mb-3">Contact No :- <%=data.phone%>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </section>
+
+  </main>
+
+
+<div style="margin-top: 300px;"></div>
+
+
+  <!-- ======= Footer ======= -->
+  <%-include("layouts/footer.ejs")%>
+  <!-- ======= End Footer ======= -->
+
+
+
+  <!-- ======= Scripts ======= -->
+  <%-include("layouts/scripts.ejs")%>
+  <!-- ======= End Scripts ======= -->
+
+  
+
+</body>
+
+</html>
+   

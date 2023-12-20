@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- ======= Head ======= -->
+<%-include("layouts/head.ejs")%>
+<!-- ======= End Head ======= -->
+<body>
+  <!-- ======= Header ======= -->
+  <%-include("layouts/header.ejs")%>
+  <!-- ======= End Header ======= -->
+
+
+
+  <!-- ======= Sidebar ======= -->
+  <%-include("layouts/sidebar.ejs")%>
+  <!-- ======= End Sidebar ======= -->
+
+  <main id="main" class="main">
+    <div class="pagetitle">
+      <h1>Appointments</h1> 
+    </div>
+
+    <section class="section dashboard">
+      <div class="row">
+        <div class="col-lg-12">
+          <table class="table datatable" style="margin-top: 20px; width: 100%;">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 15%;">User Name</th>
+                <th scope="col" style="width: 15%;">User Image</th>
+                <th scope="col" style="width: 15%;">Message</th>
+                <th scope="col" style="width: 15%;">Department Name</th>
+                <th scope="col" style="width: 15%;">Doctor Name</th>
+                <th scope="col" style="width: 15%;">Aperture Time</th>
+                <th scope="col" style="width: 15%;">Departure Time</th>
+                <th scope="col" style="width: 15%;">Status</th>
+                <th scope="col" style="width: 25%;">Operations</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <% for (let appointment of data) { %>
+                <% for (let doctor of appointment.doctor_details) { %>
+                  <% for (let department of appointment.department_details) { %>
+                    <% for (let user of appointment.user_details) { %>
+              
+                      <tr>
+                        <td><%= user.name %></td>
+                        <td><img src="/<%=user.image%>" height="50px" alt="Blog Image"></td>
+                        <td><%= appointment.message %></td>
+                        <td><%= department.departmentName %></td>
+                        <td><%= doctor.name %></td>
+                        <td><%= doctor.aperture_time %></td>
+                        <td><%= doctor.departure_time %></td>
+              
+                        <% if (!appointment.isPending) { %>
+                          <td style="color: red;">Pending</td>
+                        <% } else { %>
+                          <td style="color: green;">Approved</td>
+                        <% } %>
+              
+                        <td>
+                          <a href="/admin/approve/<%= appointment._id %>" class="btn btn-success">
+                            <%= appointment.isPending ? 'Disapprove' : 'Approve' %>
+                          </a>
+                        </td>
+                      </tr>
+              
+                    <% } %>
+                  <% } %>
+                <% } %>
+              <% } %>
+              
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    
+    
+
+  </main>
+
+
+<div style="margin-top: 300px;"></div>
+
+
+  <!-- ======= Footer ======= -->
+  <%-include("layouts/footer.ejs")%>
+  <!-- ======= End Footer ======= -->
+
+
+
+  <!-- ======= Scripts ======= -->
+  <%-include("layouts/scripts.ejs")%>
+  <!-- ======= End Scripts ======= -->
+
+  
+
+</body>
+
+</html>
+   

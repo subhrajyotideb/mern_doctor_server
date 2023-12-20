@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- ======= Head ======= -->
+<%-include("layouts/head.ejs")%>
+<!-- ======= End Head ======= -->
+<body>
+  <!-- ======= Header ======= -->
+  <%-include("layouts/header.ejs")%>
+  <!-- ======= End Header ======= -->
+
+
+
+  <!-- ======= Sidebar ======= -->
+  <%-include("layouts/sidebar.ejs")%>
+  <!-- ======= End Sidebar ======= -->
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Departments</h1>
+      <a href="/admin/adddepartment" class="btn btn-success">Add Department</a>
+      
+    </div><!-- End Page Title -->
+
+    <section class="section dashboard">
+        <div class="row">
+          <div class="col-lg-12">
+            <table class="table datatable" style="margin-top: 20px;">
+              <thead>
+                <tr>
+                  
+                </tr>
+                <tr>
+                  <th scope="col">Departments</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Image</th>
+                  <th colspan="2">Operations</th>
+                </tr>
+              </thead>
+              <tbody>
+
+<% for (let datas of data) { %>
+
+                <tr>
+                  <td><%=datas.departmentName%></td>
+                  <td><%=datas.description%></td>
+                  <td><img src="/<%=datas.image%>" height="50px" alt="Department Image"></td>
+                  <td>
+                    <a href="/admin/editdepartment/<%=datas._id%>" class="btn btn-primary">Edit</a>
+                    <a href="" class="btn btn-danger" style="margin-left: 5px;">Delete</a>
+                  </td>
+                </tr>
+
+<% } %>
+
+              </tbody>
+              
+            </table>
+          </div>
+        </div>
+      </section>
+      
+
+  </main>
+
+
+<div style="margin-top: 300px;"></div>
+
+
+  <!-- ======= Footer ======= -->
+  <%-include("layouts/footer.ejs")%>
+  <!-- ======= End Footer ======= -->
+
+
+
+  <!-- ======= Scripts ======= -->
+  <%-include("layouts/scripts.ejs")%>
+  <!-- ======= End Scripts ======= -->
+
+  
+
+</body>
+
+</html>
+   

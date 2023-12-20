@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- ======= Head ======= -->
+<%-include("layouts/head.ejs")%>
+<!-- ======= End Head ======= -->
+<body>
+  <!-- ======= Header ======= -->
+  <%-include("layouts/header.ejs")%>
+  <!-- ======= End Header ======= -->
+
+
+
+  <!-- ======= Sidebar ======= -->
+  <%-include("layouts/sidebar.ejs")%>
+  <!-- ======= End Sidebar ======= -->
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Add Blog</h1>
+    </div><!-- End Page Title -->
+    
+    
+    
+    <section class="section dashboard">
+      <div class="row">
+        <div class="col-lg-12">
+          <form action="/admin/createblog" method="post" enctype="multipart/form-data">
+          
+
+            <div class="form-group">
+              <label for="title">Blog Title:</label>
+              <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+
+            <div class="form-group">
+              <label for="title">Description:</label>
+              <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+            </div>
+  
+            <div class="form-group">
+              <label for="image">Image:</label>
+              <input type="file" class="form-control-file" id="image" name="image" accept="image/*">
+            </div>
+  
+            <button type="submit" class="btn btn-success">Add</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  
+  </main>
+  
+
+
+<div style="margin-top: 300px;"></div>
+
+
+  <!-- ======= Footer ======= -->
+  <%-include("layouts/footer.ejs")%>
+  <!-- ======= End Footer ======= -->
+
+
+
+  <!-- ======= Scripts ======= -->
+  <%-include("layouts/scripts.ejs")%>
+  <!-- ======= End Scripts ======= -->
+
+  
+
+</body>
+
+</html>
+   
