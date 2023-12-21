@@ -148,7 +148,7 @@ exports.Confirmation = async (req, res) => {
             await user.save();
 
             // Debugging: Log the host to check if it's correct
-            console.log("Host:", req.headers.host);
+            // console.log("Host:", req.headers.host);
 
             // Render the verification page
             res.render("verificationpage", {

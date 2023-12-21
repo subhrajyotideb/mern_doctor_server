@@ -120,7 +120,7 @@ exports.EditBlog = async (req,res)=>{
 // Get View Department Page
 exports.Department = async (req,res)=>{
     const result = await DepartmentModel.find()
-    res.render("department",{data:result})
+    res.render("department",{data:result, message:req.flash("message")})
 }
 
 // Get Create Department Page
@@ -152,7 +152,7 @@ exports.Doctor = async (req, res) => {
         // Assuming result is an array of doctors with their department_details
         // console.log(result[0].department_details);
 
-        res.render("doctor", { data: result });
+        res.render("doctor", { data: result ,message:req.flash("message")});
     } catch (error) {
         console.log(error);
     }
@@ -282,35 +282,61 @@ exports.CreateBlog = async (req,res)=>{
 // Update Blog
 exports.UpdateBlog = async (req,res)=>{
     try {
+        const { id } = req.params; // Assuming you are passing the blog ID in the request parameters
+        const { title, description } = req.body;
+        const image = req.file ? req.file.path : ''; // Update the image only if a new file is provided
 
-        const {title,description} = req.body
-        const image = req.file.path
+        // Find the existing blog by ID
+        const existingBlog = await BlogModel.findById(id);
 
-        const id = req.params.id
-        const Update = await BlogModel.findById({_id:id})
+        if (!existingBlog) {
+            req.flash("error", "Blog not found");
+            return res.redirect("/admin/blog");
+        }
 
-        Update.title = title,
-        Update.description = description,
-        Update.image = image
+        // Update the existing blog with new data
+        existingBlog.title = title;
+        existingBlog.description = description;
+        if (image) {
+            existingBlog.image = image;
+        }
 
-        await Update.save()
-        req.flash("message", "Blog Updated")
-        res.redirect("/admin/blog")
+        await existingBlog.save();
+        
+        req.flash("message", "Blog updated successfully");
+        return res.redirect("/admin/blog");
 
-    }
-    catch (error) {
+    } catch (error) {
         console.log(error);
-        res.redirect("/admin/editblog/${id}")
+        req.flash("error", "Failed to update blog");
+        res.redirect("/admin/blog");
     }
 }
 
 // Delete Blog
-exports.DeleteBlog = async (req,res)=>{
-    try {}
-    catch (error) {
+exports.DeleteBlog = async (req, res) => {
+    try {
+        const { id } = req.params;
 
+        // Find the existing blog by ID and remove it
+        const result = await BlogModel.findByIdAndDelete(id);
+
+        if (!result) {
+            req.flash("error", "Blog not found");
+        } else {
+            req.flash("message", "Blog deleted successfully");
+        }
+
+        return res.redirect("/admin/blog");
+
+    } catch (error) {
+        console.log(error);
+        req.flash("error", "Failed to delete blog");
+        res.redirect("/admin/blog");
     }
 }
+
+
 
 // Create Department
 exports.CreateDepartment = async (req,res)=>{
@@ -345,32 +371,46 @@ exports.CreateDepartment = async (req,res)=>{
 // Update Department
 exports.UpdateDepartment = async (req, res) => {
     try {
+        const { id } = req.params;
         const { departmentName, description } = req.body;
-        const image = req.file.path
+        const image = req.file ? req.file.path : ''; // Update the image only if a new file is provided
 
-        const id = req.params.id;
+        // Find the existing department by ID
+        const existingDepartment = await DepartmentModel.findById(id);
 
-        const Update = await DepartmentModel.findById({_id:id});
-
-        if (!Update) {
+        if (!existingDepartment) {
             req.flash("error", "Department not found");
             return res.redirect("/admin/department");
         }
 
-        Update.departmentName = departmentName;
-        Update.description = description;
-        Update.image = image;
+        // Check if the departmentName is being changed to an already existing one
+        if (departmentName !== existingDepartment.departmentName) {
+            const existingDep = await DepartmentModel.findOne({ departmentName: departmentName });
 
-        await Update.save();
+            if (existingDep) {
+                req.flash("error", "Department name already exists");
+                return res.redirect("/admin/department");
+            }
+        }
 
-        req.flash("message", "Department Updated");
-        res.redirect("/admin/department");
+        // Update the existing department with new data
+        existingDepartment.departmentName = departmentName;
+        existingDepartment.description = description;
+        if (image) {
+            existingDepartment.image = image;
+        }
+
+        await existingDepartment.save();
+
+        req.flash("message", "Department updated successfully");
+        return res.redirect("/admin/department");
 
     } catch (error) {
         console.log(error);
-        res.redirect("/admin/editdepartment");
+        req.flash("error", "Failed to update department");
+        res.redirect("/admin/department");
     }
-};
+}
 
 
 // Delete Department
@@ -434,6 +474,38 @@ exports.CreateDoctor = async (req, res) => {
         return res.redirect("/admin/adddoctor");
     }
 };
+
+// Delete Doctor
+exports.DeleteDoctor = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Find the doctor by ID and remove it
+        const result = await DoctorModel.findByIdAndDelete(id);
+
+        if (!result) {
+            req.flash("error", "Doctor not found");
+        } else {
+            // Remove the doctor from the associated department
+            const departmentId = result.department_id;
+            const department = await DepartmentModel.findById(departmentId);
+            
+            if (department) {
+                department.doctor_id = department.doctor_id.filter(docId => docId.toString() !== id.toString());
+                await department.save();
+            }
+
+            req.flash("message", "Doctor deleted successfully");
+        }
+
+        return res.redirect("/admin/doctor");
+
+    } catch (error) {
+        console.log(error);
+        req.flash("error", "Failed to delete doctor");
+        res.redirect("/admin/doctor");
+    }
+}
 
 
 // Get Edit Doctor Page
@@ -529,11 +601,34 @@ exports.GetContact = async (req,res)=>{
     try {
         const result = await ContactModel.find()
         return res.render("contact",{
-            data:result,
+            data:result,message:req.flash("message")
         })
     }
     catch (error) {
         console.log(error);
+    }
+}
+
+// Contact Delete
+exports.DeleteContact = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Find the contact by ID and remove it
+        const result = await ContactModel.findByIdAndDelete(id);
+
+        if (!result) {
+            req.flash("error", "Contact not found");
+        } else {
+            req.flash("message", "Contact deleted successfully");
+        }
+
+        return res.redirect("/admin/contact");
+
+    } catch (error) {
+        console.log(error);
+        req.flash("error", "Failed to delete contact");
+        res.redirect("/admin/contact");
     }
 }
 

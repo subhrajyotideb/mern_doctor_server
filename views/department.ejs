@@ -23,6 +23,11 @@
       
     </div><!-- End Page Title -->
 
+
+    <% if (message && message.length > 0) { %>
+      <h5 style="color: rgb(45, 223, 9); text-align: center;"><%=message%></h5>
+  <% } %>
+
     <section class="section dashboard">
         <div class="row">
           <div class="col-lg-12">
@@ -48,7 +53,7 @@
                   <td><img src="/<%=datas.image%>" height="50px" alt="Department Image"></td>
                   <td>
                     <a href="/admin/editdepartment/<%=datas._id%>" class="btn btn-primary">Edit</a>
-                    <a href="" class="btn btn-danger" style="margin-left: 5px;">Delete</a>
+                    <!-- <a href="" class="btn btn-danger" style="margin-left: 5px;">Delete</a> -->
                   </td>
                 </tr>
 

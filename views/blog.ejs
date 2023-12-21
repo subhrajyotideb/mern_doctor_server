@@ -48,7 +48,8 @@
                                 <td><img src="/<%=datas.image%>" height="50px" alt="Blog Image"></td>
                                 <td>
                                     <a href="/admin/editblog/<%=datas._id%>" class="btn btn-primary">Edit</a>
-                                    <a href="" class="btn btn-danger" style="margin-left: 5px;">Delete</a>
+                                    <a href="/admin/deleteblog/<%= datas._id %>" class="btn btn-danger" style="margin-left: 5px;">Delete</a>
+
                                 </td>
                             </tr>
                         <% } %>

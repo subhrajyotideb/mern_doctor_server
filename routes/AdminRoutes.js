@@ -24,17 +24,23 @@ Route.get("/addblog",AdminVerifyToken,AdminController.AddBlog)
 Route.get("/editblog/:id",AdminVerifyToken,AdminController.EditBlog)
 Route.post("/createblog",BlogMulter,AdminVerifyToken,AdminController.CreateBlog)
 Route.post("/updateblog/:id",BlogMulter,AdminVerifyToken,AdminController.UpdateBlog)
+Route.get("/deleteblog/:id", AdminVerifyToken, AdminController.DeleteBlog);
+
+
 // Doctor
 Route.get("/doctor",AdminVerifyToken,AdminController.Doctor)
 Route.get("/adddoctor",AdminVerifyToken,AdminController.AddDoctor)
 Route.get("/editdoctor/:id",AdminVerifyToken,AdminController.EditDoctor)
 Route.post("/createdoctor",DoctorMulter,AdminVerifyToken,AdminController.CreateDoctor)
 Route.post("/updatedoctor/:id",DoctorMulter,AdminVerifyToken,AdminController.UpdateDoctor)
+Route.get("/deletedoctor/:id", AdminVerifyToken, AdminController.DeleteDoctor);
+
 // Featured Doctor
 Route.get("/featured",AdminVerifyToken,AdminController.Featured)
 Route.get("/fbutton/:id",AdminVerifyToken,AdminController.FeaturedButton)
 // Contact Us Details
 Route.get("/contact",AdminVerifyToken,AdminController.GetContact)
+Route.get("/deletecontact/:id", AdminVerifyToken, AdminController.DeleteContact);
 
 
                     // Admin Login //
