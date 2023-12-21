@@ -6,6 +6,9 @@ const {UserVerifyToken} = require("../middleware/AuthVerify")
 // Admin and User Registration
 Route.post("/register",UserImg,ApiController.CreateUser)
 
+// NodeMailer Confirmation
+Route.get("/confirmation/:token",ApiController.Confirmation)
+
 // User Login
 Route.post("/login",ApiController.UserLogin)
 

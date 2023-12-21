@@ -5,17 +5,65 @@ const ContactModel = require("../model/Contact")
 const DepartmentModel = require("../model/Department")
 const BlogModel = require("../model/Blog")
 const BlogCommentModel = require("../model/BlogComment")
-const BlogLike = require("../model/BlogLike")
 
 const {SecurePassword,SecureForget,CreateUserToken} = require("../middleware/AuthHelper")
 const bcrypt = require("bcryptjs")
+const crypto = require("crypto");
+const nodemailer = require("nodemailer")
 
 
 
 // Create User
+// exports.CreateUser = async (req, res) => {
+//     try {
+//         const { name, email, phone, password, forget } = req.body;
+
+//         // Check if email or phone already exists
+//         const existingUser = await UserModel.findOne({ $or: [{ email: email }, { phone: phone }] });
+
+//         if (existingUser) {
+//             return res.status(400).json({
+//                 status: 400,
+//                 message: "Email or phone already exists. Please use a different email or phone.",
+//             });
+//         }
+
+//         const Hashpassword = await SecurePassword(password);
+//         const Hashforget = await SecureForget(forget)
+//         const image = req.file.path;
+
+//         const NewUser = new UserModel({
+//             name: name,
+//             email: email,
+//             phone: phone,
+//             password: Hashpassword,
+//             image: image,
+//             forget: Hashforget,
+//         });
+
+//         const result = await NewUser.save();
+//         res.status(200).json({
+//             status: 200,
+//             message: "User Registration successful",
+//             data: result,
+//         });
+//     } catch (error) {
+//         res.status(400).json({
+//             status: 400,
+//             message: "Error in User Registration",
+//         });
+//         console.log(error);
+//     }
+// };
+
+
 exports.CreateUser = async (req, res) => {
     try {
         const { name, email, phone, password, forget } = req.body;
+
+        const Hashpassword = await SecurePassword(password);
+        const Hashforget = await SecureForget(forget)
+        const image = req.file.path;
 
         // Check if email or phone already exists
         const existingUser = await UserModel.findOne({ $or: [{ email: email }, { phone: phone }] });
@@ -27,9 +75,6 @@ exports.CreateUser = async (req, res) => {
             });
         }
 
-        const Hashpassword = await SecurePassword(password);
-        const Hashforget = await SecureForget(forget)
-        const image = req.file.path;
 
         const NewUser = new UserModel({
             name: name,
@@ -38,20 +83,80 @@ exports.CreateUser = async (req, res) => {
             password: Hashpassword,
             image: image,
             forget: Hashforget,
+            token: crypto.randomBytes(16).toString('hex')
+
         });
 
         const result = await NewUser.save();
-        res.status(200).json({
-            status: 200,
-            message: "User Registration successful",
-            data: result,
-        });
+
+        const tokenSaved = result.token
+        const emailSaved = result.email
+
+        if (tokenSaved) {
+            const transPorter = nodemailer.createTransport({
+                host: "smtp.gmail.com",
+                port: 587,
+                secure: false,
+                requireTLS: true,
+                auth: {
+                    user: "subhrajyotidebnath19@gmail.com",
+                    pass: "iiue bnux wyid iqgd",
+                }
+            });
+            
+            const mailOptions={
+                from: 'mailto:no-reply@subhrajyoti.com',
+                to: emailSaved,
+                subject: 'Account Verification',
+                text: 'Hello ' + name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/confirmation\/' + '\/' + encodeURIComponent(tokenSaved) + '\n\nThank You!\n' 
+            }
+            transPorter.sendMail(mailOptions);
+            return res.status(200).json({
+                success:true,
+                message:"verification link sent!",
+                data: result,
+            })
+           }
+
     } catch (error) {
         res.status(400).json({
             status: 400,
             message: "Error in User Registration",
         });
         console.log(error);
+    }
+};
+
+// Confirm 
+exports.Confirmation = async (req, res) => {
+    try {
+        const token_id = req.params.token;
+        const user = await UserModel.findOne({ token: token_id });
+
+        if (!user || !user.email || !user.token) {
+            return res.status(400).json({
+                status: false,
+                message: "Token has expired or is invalid.",
+            });
+        } else if (user.isVerified === true) {
+            return res.render("alreadyregistered")
+        } else {
+            // Update user.isVerified to true
+            user.isVerified = true;
+
+            // Save the updated user
+            await user.save();
+
+            return res.render("verificationpage",{
+                data:user.name,
+            })
+        }
+    } catch (error) {
+        console.error("Error in confirmation:", error);
+        return res.status(500).json({
+            status: false,
+            message: "Error in confirmation.",
+        });
     }
 };
 
@@ -71,9 +176,17 @@ exports.UserLogin = async (req, res) => {
         if (!user) {
             return res.status(400).json({
                 status: 400,
-                message: "Wrong Email",
+                message: "Wrong Email!",
             });
         }
+
+        if (user.isVerified===false) {
+            return res.status(400).json({
+                status: 400,
+                message: "User not verified!",
+            });
+        }
+
 
         if (user.isAdmin === false && (await bcrypt.compare(password, user.password))) {
             const token = await CreateUserToken({

@@ -29,6 +29,21 @@ const UserSchema = new mongoose.Schema({
         type:Boolean,
         default:false,
     },
+    isVerified:{
+        type:Boolean,
+        default:false,
+    },
+    token:{
+        type:String,
+        required:true
+    },
+    expiresAt:{
+        type:Date,
+        default:Date.now(),
+        index:{
+            expires:864000
+        }
+    }
 })
 
 const UserModel = mongoose.model("user",UserSchema)

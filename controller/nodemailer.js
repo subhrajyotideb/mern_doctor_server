@@ -163,3 +163,90 @@ const tokenModel = new mongoose.model("token",tokenSchema);
 module.exports =tokenModel;
 
   
+
+
+const createRegister = async (req, res) => {
+    try {
+        const passwordHash = await utility.securePassword(req.body.password);
+        let memberdata = new Member({
+            name: req.body.name,
+            email: req.body.email,
+            phone: req.body.phone,
+            answer: req.body.answer,
+            image: req.file.path,
+            password: passwordHash
+        });
+        const data = await Member.findOne({ email: req.body.email });
+        if (!req.body.name || !req.body.email || !req.body.phone || !req.body.password || !req.body.answer) {
+            return res.status(400).json({
+                success: false,
+                message: "all fields are required!"
+            })
+        } else {
+            if (data) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Member already exists!"
+                })
+            } else {
+                memberdata.save()
+                    .then(savedMember => {
+                        const token_model = new Token({
+                            memberId: savedMember._id,
+                            token: crypto.randomBytes(16).toString('hex')
+                        });
+
+                        token_model.save()
+                            .then(token => {
+                                var transporter = nodemailer.createTransport({
+                                    host: "smtp.gmail.com",
+                                    port: 587,
+                                    secure: false,
+                                    requireTLS: true,
+                                    auth: {
+                                        user: "mailto:anishab163@gmail.com",
+                                        pass: "btyi yvac avkj bypy",
+                                    }
+                                });
+
+                                var mailoptions = {
+                                    from: 'mailto:no-reply@anisha.com',
+                                    to: savedMember.email,
+                                    subject: 'Account Verification',
+                                    text: 'Hello ' + req.body.name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/confirmation\/' + encodeURIComponent(savedMember.email) + '\/' + encodeURIComponent(token.token) + '\n\nThank You!\n'
+                                };
+                                transporter.sendMail(mailoptions, (error, info) => {
+                                    if (error) {
+                                        console.log("Error sending email:", error);
+                                        return res.status(400).json({
+                                            success: false,
+                                            message: "Error sending verification email!"
+                                        });
+                                    }
+                                    console.log("Email sent:", info.response);
+                                    const imageUrl = `${req.protocol}://${req.get("host")}/${savedMember.image}`;
+                                    return res.status(200).json({
+                                        success: true,
+                                        message: "Verification link sent!",
+                                        savedMember
+                                    });
+                                });
+                            })
+                            .catch(err => {
+                                console.log("Error while creating token", err);
+                                return res.status(400).json({
+                                    success: false,
+                                    message: "Token save error!"
+                                });
+                            });
+                    });
+            }
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(400).json({
+            success: false,
+            message: error.message || "Member registration failed"
+        });
+    }
+};
