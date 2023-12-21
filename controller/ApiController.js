@@ -108,7 +108,7 @@ exports.CreateUser = async (req, res) => {
                 from: 'mailto:no-reply@subhrajyoti.com',
                 to: emailSaved,
                 subject: 'Account Verification',
-                text: 'Hello ' + name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/confirmation\/' + '\/' + encodeURIComponent(tokenSaved) + '\n\nThank You!\n' 
+                text: 'Hello ' + name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/confirmation\/' + '\/' + tokenSaved + '\n\nThank You!\n'
             }
             transPorter.sendMail(mailOptions);
             return res.status(200).json({
@@ -139,7 +139,7 @@ exports.Confirmation = async (req, res) => {
                 message: "Token has expired or is invalid.",
             });
         } else if (user.isVerified === true) {
-            return res.render("alreadyregistered")
+            return res.status(200).render("alreadyregistered");
         } else {
             // Update user.isVerified to true
             user.isVerified = true;
@@ -147,9 +147,9 @@ exports.Confirmation = async (req, res) => {
             // Save the updated user
             await user.save();
 
-            return res.render("verificationpage",{
-                data:user.name,
-            })
+            return res.status(200).render("verificationpage", {
+                data: user.name,
+            });
         }
     } catch (error) {
         console.error("Error in confirmation:", error);
@@ -159,6 +159,7 @@ exports.Confirmation = async (req, res) => {
         });
     }
 };
+
 
 // Login User
 exports.UserLogin = async (req, res) => {
