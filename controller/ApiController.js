@@ -108,7 +108,7 @@ exports.CreateUser = async (req, res) => {
                 from: 'mailto:no-reply@subhrajyoti.com',
                 to: emailSaved,
                 subject: 'Account Verification',
-                text: 'Hello ' + name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/confirmation\/' + '\/' + encodeURIComponent(tokenSaved) + '\n\nThank You!\n' 
+                text: 'Hello ' + name + ',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + 'confirmation\/' + '\/' + encodeURIComponent(tokenSaved) + '\n\nThank You!\n' 
             }
             transPorter.sendMail(mailOptions);
             return res.status(200).json({
@@ -163,7 +163,6 @@ exports.Confirmation = async (req, res) => {
         });
     }
 };
-
 
 // Login User
 exports.UserLogin = async (req, res) => {
