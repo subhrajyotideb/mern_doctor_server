@@ -100,7 +100,7 @@ exports.CreateUser = async (req, res) => {
                 requireTLS: true,
                 auth: {
                     user: "subhrajyotidebnath19@gmail.com",
-                    pass: "iiue bnux wyid iqgd",
+                    pass: "kxje omrc jfwj nbde",
                 }
             });
             
